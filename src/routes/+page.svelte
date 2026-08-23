@@ -16,7 +16,7 @@
         <br>
 
 		<p>How many beats have you counted?</p>
-		<input placeholder={String(lastTimeBeats)} bind:value={beats}/>
+		<input placeholder={String(beats)} bind:value={beats}/>
 
 		<br>
 
@@ -40,12 +40,6 @@
     import '../app.css'
 
     let timeleft = $state(15);
-
-    let lastTimeBeats = $state(Number(sessionStorage.getItem("beats")) || 15)
-    $effect(() => {
-        sessionStorage.setItem("beats", String(beats))
-    })
-
     let beats = $state(0);
     $effect(() => {
         sessionStorage.setItem("beats", String(beats))
