@@ -1,51 +1,42 @@
 <main>
+    <div class="body">
+	    {#if !inProgress}
+		    {#if !progressCompleted}
+			    <button onclick={startCounting}>Start counting</button>
+    		{/if}
+	    {/if}
 
-<div class="body">
-	{#if !inProgress}
-		{#if !progressCompleted}
-			<button onclick={startCounting}>Start counting</button>
-		{/if}
-	{/if}
+    	{#if inProgress}
+            <h1>{timeleft}</h1>
+		    <p>seconds left</p>
+    	{/if}
 
-	{#if inProgress}
-        <h1>{timeleft}</h1>
-		<p>seconds left</p>
-	{/if}
+	    {#if progressCompleted}
+            <br>
+    		<p>How many beats have you counted?</p>
+	    	<input placeholder={String(beats)} bind:value={beats}/>
 
-	{#if progressCompleted}
+		    <br>
+
+    		{#if beats > 70 || beats < 0}
+	    	    <p>You should write a realistic amount of beats.</p>
+		        <p>If you really have <strong>{beats * 4} BPM</strong>, then it means you should rush to the hospital right away.</p>
+            {:else if beats > 0}
+	    	    <p>You have {beats * 4} BPM.</p>
+        {/if}
         <br>
 
-		<p>How many beats have you counted?</p>
-		<input placeholder={String(lastTimeBeats)} bind:value={beats}/>
-
-		<br>
-
-		{#if beats > 70 || beats < 0}
-		    <p>You should write a realistic amount of beats.</p>
-		    <p>If you really have <strong>{beats * 4} BPM</strong>, then it means you should rush to the hospital right away.</p>
-        {:else if beats > 0}
-		    <p>You have {beats * 4} BPM.</p>
-    {/if}
-
-    <br>
-
-    <div>
-        <button onclick={restart}>Try again</button>
+        <div>
+            <button onclick={restart}>Try again</button>
+        </div>
+	    {/if}
     </div>
-	{/if}
-</div>
 </main>
 
 <script>
     import '../app.css'
 
     let timeleft = $state(15);
-
-    let lastTimeBeats = $state(Number(sessionStorage.getItem("beats")) || 15)
-    $effect(() => {
-        sessionStorage.setItem("beats", String(beats))
-    })
-
     let beats = $state(0);
     $effect(() => {
         sessionStorage.setItem("beats", String(beats))
